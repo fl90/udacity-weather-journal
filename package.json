@@ -1,0 +1,25 @@
+{
+  "name": "weather-journal",
+  "version": "1.0.0",
+  "description": "package.json for weather journal",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fl90/udacity-weather-journal.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fl90/udacity-weather-journal/issues"
+  },
+  "homepage": "https://github.com/fl90/udacity-weather-journal#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1"
+  }
+}
