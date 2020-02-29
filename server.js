@@ -22,7 +22,7 @@ app.use(express.static('website'));
 
 
 // Setup Server
-const port = 3000;
+const port = 3003;
 const server = app.listen(port, listening);
 
 function listening(){
