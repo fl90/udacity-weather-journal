@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <title>Weather Journal</title>
 <link href="https://fonts.googleapis.com/css?family=Oswald:400,600,700|Ranga:400,700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
 <link href="main.css" rel="stylesheet"></head>
  <body>
 
@@ -12,25 +11,40 @@
   <div class ="holder headline">
     Travel Planner
   </div>
+  <div class="inputs">
+    <form onsubmit="return Client.getGeoData(event)">
+      <!-- L O C A T I O N   E N T R Y -->
+      <div class ="zip-container forms-container">
+          <div class="content-headline">Travel Destination Name</div>
+          <input type="text" id="zip" placeholder="Location Name">
+        </div>
+        <!-- D A T E   E N T R Y -->
+        <div class="date-container forms-container">
+          <div class="content-headline">Travel Start and End Date</div>
+          <input type="date" id="start-date">
+          <input type="date" id="end-date">
+        </div>
+        <input class="submit-button" type="submit" value="submit" onclick="return Client.getGeoData(event)" onsubmit="return Client.getGeoData(event)">
+      </form>
+  </div>
   <div class="content">
-    <!-- L O C A T I O N   E N T R Y -->
-    <div class ="zip-container">
-      <div class="content-headline">Travel Destination Zip code</div>
-      <input type="text" id="zip" placeholder="zip code">
+    <!-- T R I P   C O N T A I N E R -->
+    <div class="trip-container">
+      <img id="trip-image">
+      <div id="destination"></div>
+      <div class="header">Date of the trip</div>
+      <div class="trip-date"><span id="trip-start-date"></span> - <span id="trip-end-date"></span></div>
+      <div class="header">Trip length</div>
+      <div id="trip-length"></div>
+      <div class="header">Typical weather then</div>
+      <div id="trip-weather" class="trip-data"></div>
+      <div class="temperatur-container">
+        <div class="header">high: </div>
+        <div id="temp-max" class="trip-data"></div>
+        <div class="header">low: </div>
+        <div id="temp-low" class="trip-data"></div>
+      </div>
     </div>
-        <div class ="holder feel">
-          <label for="feelings">How are you feeling today?</label>
-          <textarea class="myInput" id="feelings" placeholder="Enter your feelings here" rows="9" cols="50"></textarea>
-          <button id="generate" type = "submit"> Generate </button>
-        </div>
-        <div class ="holder entry">
-          <div class = "title">Most Recent Entry</div>
-          <div id = "entryHolder">
-            <div id = "date"></div> 
-            <div id = "temp"></div>
-            <div id = "content"></div>
-          </div>
-        </div>
   </div>
 </div>
 <script src="app.js" type="text/javascript"></script>

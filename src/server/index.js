@@ -3,8 +3,15 @@ dotenv.config();
 
 var path = require('path');
 const express = require('express');
+const request = require('request');
 
 const app = express();
+const fetch = require("node-fetch");
+
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    next();
+  });
 
 /* Middleware*/
 //Here we are configuring express to use body-parser as middle-ware.
@@ -25,79 +32,48 @@ app.listen(port, function(){
     console.log('Example app listening on port: ' + port + '!');
 });
 
+// API FUNCTIONS
 
+// DARK SKY API
+app.post('/darksky/forecast', (req, res) => {
+    console.log(req.body);
+    request(
+            {url: process.env.DARK_SKY_API_URL + req.body.lat + "," + req.body.lng 
+             + "," + req.body.start + "?exclude=currently,minutely,hourly,flags&units=si"},
+            (error, response, body) => {
+            if(error || response.statusCode !== 200){
+                return resolve.status(500).json({ type: 'error', message: err.message});
+                console.log(error);
+            }
 
-// /* Global Variables */
+            res.json(JSON.parse(body));
+        }
+    )
+})
 
+// PIXABAY API
+app.post('/pixabay/image', (req, res) => {
+    request(
+            {url: process.env.PIXABAY_API_URL + "&q=" + req.body.destination + "&image_type=photo&orientation=horizontal"},// req.body.lat + "," + req.body.lng 
+            //  + "," + req.body.start + "?exclude=currently,minutely,hourly,flags"},
+            (error, response, body) => {
+            if(error || response.statusCode !== 200){
+                return resolve.status(500).json({ type: 'error', message: err.message});
+                console.log(error);
+            }
+            res.json(JSON.parse(body));
+        }
+    )
+})
 
-// // Event listener to add function to existing HTML DOM element
-// document.getElementById('generate').addEventListener('click', performAction);
-// let zipCode = document.getElementById('zip');
-// let userResponse = document.getElementById('feelings');
-
-// /* Function called by event listener */
-// function performAction(){
-//     retrieveData(baseURL + zipCode.value + '&APPID=' + apiKey)
-//     .then(function(data){
-//         postData('http:localhost:3000/add', {
-//             temperature : calcTemp(data.main.temp) + ' °C', 
-//             date: newDate, 
-//             user_response: userResponse.value})
-//             .then(function(receivedData){
-//                 updateUI(receivedData)
-//             })
-//     });
-// }
-
-// /* function for updating the ui */
-// function updateUI(data){
-//     document.getElementById('date').innerHTML = data[data.length - 1].date;
-//     document.getElementById('temp').innerHTML = data[data.length - 1].temperature;
-//     document.getElementById('content').innerHTML = data[data.length - 1].user_response;
-// }
-
-// /* function to calc the temperature */
-// function calcTemp(temp){
-//     let num = temp - kelvinZero;
-//     return Number(num.toFixed(2));
-// }
-
-// /* Function to GET Web API Data*/
-// const retrieveData = async(url='') => {
-//     const request = await fetch(url);
-//     try{
-//         // transform retrieved data into json
-//         const allData = await request.json();
-//         return allData;
-//     }
-//     catch(error){
-//         console.log("error: " + error);
-//     }
-// };
-
-// /* Function to POST data */
-// const postData = async ( url = '', data = {})=>{
-
-//     const response = await fetch(url, {
-//     method: 'POST',
-//     credentials: 'same-origin', 
-//     headers: {
-//         'Content-Type': 'application/json',
-//     },
-//     body: JSON.stringify(data), // body data type must match "Content-Type" header        
-//   });
-
-//     try {
-//       const newData = await response.json();
-//       return newData;
-//     }catch(error) {
-//     console.log("error", error);
-//     }
-// }
-
-// /* Function to GET Project Data */
-
-// // Create a new date instance dynamically with JS
-// let d = new Date();
-// let newDate = d.getDate() + '.' + (d.getMonth() + 1) + '.' + d.getFullYear();
-// const kelvinZero = 273.15;
+const retrieveData = async(url='') => {
+    const request = await fetch(url);
+    try{
+        // transform retrieved data into json
+        const allData = await request.json();
+        return allData;
+    }
+    catch(error){
+        console.log("error: " + error);
+    }
+};
