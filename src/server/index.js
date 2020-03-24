@@ -1,3 +1,5 @@
+let projectData = {};
+
 const dotenv = require('dotenv');
 dotenv.config();
 
@@ -34,6 +36,31 @@ app.listen(port, function(){
 
 // API FUNCTIONS
 
+// GENONAMES API
+app.post('/geonames/place', (req, res) =>{
+    console.log(req.body);
+    request(
+        {url: process.env.GEONAME_API_URL + req.body.location + process.env.GEONAME_USERNAME},
+        (error, response, body) => {
+            if(error || response.statusCode !== 200){
+                return resolve.status(500).json({ type: 'error', message: err.message});
+                console.log(error);
+            }
+            projectData.geoname = JSON.parse(body).postalCodes[0];
+            res.send("Place saved");
+        }
+    )
+})
+
+app.get('/geonames/getPlace', (req, res) => {
+    if(projectData != null && projectData.geoname != null){
+        res.send(projectData.geoname);
+    }
+    else{
+        res.send("No geoname saved");
+    }
+})
+
 // DARK SKY API
 app.post('/darksky/forecast', (req, res) => {
     console.log(req.body);
@@ -46,9 +73,21 @@ app.post('/darksky/forecast', (req, res) => {
                 console.log(error);
             }
 
-            res.json(JSON.parse(body));
+            projectData.weather = JSON.parse(body).daily.data[0];
+
+            // res.json(JSON.parse(body));
+            res.send("Weather forecast saved");
         }
     )
+})
+
+app.get('/darksky/getForecast', (req, res) => {
+    if(projectData != null && projectData.weather != null){
+        res.send(projectData.weather);
+    }
+    else{
+        res.send("No weather saved");
+    }
 })
 
 // PIXABAY API
@@ -61,10 +100,24 @@ app.post('/pixabay/image', (req, res) => {
                 return resolve.status(500).json({ type: 'error', message: err.message});
                 console.log(error);
             }
-            res.json(JSON.parse(body));
+            projectData.image = JSON.parse(body).hits[0];
+            // res.json(JSON.parse(body));
+            res.send("Image saved");
         }
     )
 })
+
+
+app.get('/pixabay/getImage', (req, res) => {
+    if(projectData != null && projectData.image != null){
+        res.send(projectData.image);
+    }
+    else{
+        res.send("No weather saved");
+    }
+})
+
+
 
 const retrieveData = async(url='') => {
     const request = await fetch(url);

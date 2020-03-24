@@ -1,3 +1,7 @@
-udacity-weather-journal
+Udacity Travel App
 
-Udacity Porject for testing knowledge of javscript async functions.
+Choose your destination and the trip dates.
+
+
+Extended your project feature:
+-TripLength calculated and testetd
