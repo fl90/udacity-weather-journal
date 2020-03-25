@@ -27,7 +27,6 @@
           <input type="date" id="end-date">
         </div>
         <input class="submit-button" type="submit" value="submit" onclick="return Client.getGeoData(event)" onsubmit="return Client.getGeoData(event)">
-        <input class="submit-button" type="submit" value="Test" onclick="return Client.testGeoData(event)" onsubmit="return Client.testGeoData(event)">
       
       </form>
   </div>
@@ -52,6 +51,19 @@
   </div>
 </div>
 <script src="app.js" type="text/javascript"></script>
+<script type="test/javascript">
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function() {
+      navigator.serviceWorker.register('/dist/main.js.js').then(function(registration) {
+        // Registration was successful
+        console.log('ServiceWorker registration successful with scope: ', registration.scope);
+      }, function(err) {
+        // registration failed :(
+        console.log('ServiceWorker registration failed: ', err);
+      });
+    });
+  }
+</script>
 
 <script type="text/javascript" src="main.js"></script></body>
 </html>
